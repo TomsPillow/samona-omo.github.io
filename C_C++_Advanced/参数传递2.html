@@ -1,0 +1,241 @@
+<!doctype html>
+<html>
+<head>
+<meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
+<title>参数传递（二）</title>
+</head>
+<body><h1 id='参数传递二）'>参数传递（二）</h1>
+<p><em>参考  C++ Primer Plus 第6版</em></p>
+<blockquote><h2 id='c中的引用传递'><strong>C++中的引用传递</strong></h2>
+<p><em>在C++中，参数传递是包含值传递的，且用法与C语言中一致，但是引用传递作为C++的一大特点，是C语言中未支持的</em></p>
+<h4 id='1-引用变量的创建'>1. 引用变量的创建：</h4>
+<blockquote><pre><code class='language-c++' lang='c++'>int rats;
+//创建引用变量rodents作为rats的别名
+int &amp; rodents = rats;
+</code></pre>
+<h5 id='使用引用变量的注意事项'>使用引用变量的注意事项：</h5>
+<ol start='' >
+<li><strong>声明时进行初始化</strong></li>
+<li><strong>一旦与某个变量相关联后，即仅效忠于此变量</strong></li>
+
+</ol>
+<p>对于上述第一条：</p>
+<pre><code class='language-c++' lang='c++'>int rats;
+//不被允许的用法
+int &amp; rodents;
+rodents = rats;
+</code></pre>
+<p>对于第二条，可参照如下例子：</p>
+<pre><code class='language-c++' lang='c++'>#include &lt;iostream&gt;
+using namespace std;
+int main(void)
+{
+    int rats = 10;
+    int &amp; rodents = rats;
+    int bunnies = 20;
+    cout &lt;&lt; &quot;after initialization:&quot;&lt;&lt;endl;
+  	cout &lt;&lt; &quot;rats = &quot; &lt;&lt; rats &lt;&lt; &quot;, rodents = &quot; &lt;&lt; rodents &lt;&lt; &quot;, bunnies = &quot;&lt;&lt;bunnies&lt;&lt; endl;
+
+    rodents = bunnies;
+    cout &lt;&lt; &quot;after assignment to rodents:&quot; &lt;&lt; endl;
+    cout &lt;&lt; &quot;rats = &quot;&lt;&lt;rats&lt;&lt;&quot;, rodents = &quot; &lt;&lt; rodents &lt;&lt; &quot;, bunnies = &quot;&lt;&lt;bunnies&lt;&lt;endl;
+    cout &lt;&lt; &quot;address of rats:&quot;&lt;&lt; &amp;rats&lt;&lt;endl;
+    cout &lt;&lt; &quot;address of rodents:&quot;&lt;&lt; &amp;rodents&lt;&lt;endl;
+    cout &lt;&lt; &quot;address of bunnies:&quot;&lt;&lt; &amp;bunnies&lt;&lt;endl;
+}
+</code></pre>
+<p>输出结果：</p>
+<pre><code class='language-json' lang='json'>after initialization:
+rats = 10, rodents = 10, bunnies = 20
+after assignment to rodents:
+rats = 20, rodents = 20, bunnies = 20
+address of rats:0x7ffee795f4bc
+address of rodents:0x7ffee795f4bc
+address of bunnies:0x7ffee795f4ac
+</code></pre>
+<p>针对第二条，这里还有一个例子：</p>
+<pre><code class='language-c++' lang='c++'>#include &lt;iostream&gt;
+using namespace std;
+int main(void)
+{
+    int rats = 10;
+    int * pt = &amp;rats;
+    int &amp; rodents = *pt;
+    int bunnies = 20;
+
+    cout &lt;&lt; &quot;after initialization:&quot; &lt;&lt; endl;
+    cout &lt;&lt; &quot;rats = &quot; &lt;&lt; rats &lt;&lt; &quot;, rodents = &quot; &lt;&lt; rodents;
+  	cout &lt;&lt; &quot;, bunnies = &quot;&lt;&lt;bunnies&lt;&lt;&quot;, *pt = &quot;&lt;&lt; *pt&lt;&lt; endl;
+
+    pt = &amp;bunnies;
+    cout &lt;&lt; &quot;after change of pt:&quot;&lt; &lt;e ndl;
+    cout &lt;&lt; &quot;rats = &quot;&lt;&lt;r ats &lt;&lt;&quot;, rodents = &quot;&lt;&lt; rodents;
+  	cout &lt;&lt; &quot;, bunnies = &quot;&lt;&lt; bunnies &lt;&lt;&quot;, *pt = &quot;&lt;&lt; *pt &lt;&lt; endl;
+
+    cout &lt;&lt; &quot;address of rats:&quot; &lt;&lt; &amp;rats &lt;&lt; endl;
+    cout &lt;&lt; &quot;address of rodents:&quot; &lt;&lt; &amp;rodents &lt;&lt; endl;
+    cout &lt;&lt; &quot;address of bunnies:&quot; &lt;&lt; &amp;bunnies &lt;&lt; endl;
+    cout &lt;&lt; &quot;value in pt:&quot; &lt;&lt; pt &lt;&lt; endl;
+
+}
+</code></pre>
+<p>输出结果：</p>
+<pre><code class='language-json' lang='json'>after initialization:
+rats = 10, rodents = 10, bunnies = 20, *pt = 10
+after change of pt:
+rats = 10, rodents = 10, bunnies = 20, *pt = 20
+address of rats:0x7ffee11734bc
+address of rodents:0x7ffee11734bc
+address of bunnies:0x7ffee11734a4
+value in pt:0x7ffee11734a4
+</code></pre>
+<p>这里的<code>int &amp; rodents = *pt</code>事实上是等效于<code>int &amp; rodents = rats</code>的。</p>
+<p>其实，我们可以将<strong>引用变量</strong>理解成<strong><code>const</code>指针</strong>，它与引用非常接近，<strong>创建时必须初始化，且初始化后就不再改变指向的地址</strong>。</p>
+<pre><code class='language-c++' lang='c++'>int rats;
+int &amp; rodents = rats;
+//可理解为，这里的*pr等效于rodents
+int * const pr = &amp;rats;
+</code></pre>
+<p>&nbsp;</p>
+</blockquote>
+<h4 id='2-用于参数传递的引用'>2. 用于参数传递的引用：</h4>
+<blockquote><p>关于C++中的引用传递，与值传递之间的区别，这里借用 <em>C++ Primer Plus</em> 中的例子来说明：</p>
+<pre><code class='language-c++' lang='c++'>#include &lt;iostream&gt;
+void swapr(int &amp;a,int &amp;b);  // a,b are aliases for ints 
+void swapp(int *p,int* q);  // p,q are addresses of ints 
+void swapv(int a,int b);    // a,b are new variables
+
+int main( )
+{
+ using namespace std;
+ int wallet1 = 300;
+ int wallet2 = 350;
+ cout &lt;&lt; &quot;wallet1 = $&quot; &lt;&lt; wallet1;
+ cout &lt;&lt;&quot; wallet2 = $&quot; &lt;&lt; wallet2 &lt;&lt; endl;
+ cout &lt;&lt; &quot;Using references to swap contents:\n&quot;; 
+ swapr(wallet1,wallet2);     // pass variables 
+ cout &lt;&lt; &quot;wallet1 = $&quot; &lt;&lt; wallet1;
+ cout &lt;&lt;&quot; wallet2 = $&quot; &lt;&lt; wallet2 &lt;&lt; endl;
+ cout &lt;&lt; &quot;Using pointers to swap contents again:\n&quot;; 
+ swapp(&amp;wallet1,&amp;wallet2);   // pass addresses of variables 
+ cout &lt;&lt; &quot;wallet1 = $&quot;&lt;&lt; wallet1;
+ cout &lt;&lt;&quot; wallet2 = $&quot; &lt;&lt; wallet2 &lt;&lt; endl;
+ cout &lt;&lt; &quot;Trying to use passing by value:\n&quot;;
+ swapv(wallet1,wallet2);     // pass values of variables 
+ cout &lt;&lt; &quot;wallet1 = $&quot; &lt;&lt; wallet1;
+ cout &lt;&lt;&quot; wallet2= $&quot; &lt;&lt; wallet2 &lt;&lt; endl; 
+ return 0;
+}
+
+void swapr(int &amp; a,int &amp; b)     // use references
+{
+ int temp;
+ temp = a;
+ // use a,b for values of variables
+ a = b;
+ b = temp;
+}
+
+void swapp(int * p, int * q)    // use pointers
+{
+ int temp;
+ // use *p,*q for values of variables
+ temp = *p;
+ *p = *q;
+ *q = temp;
+}
+
+void swapv(int a, int b)        // trying use values
+{
+ int temp;
+ temp = a;
+ a = b;
+ b = temp;
+}
+</code></pre>
+<p>输出结果：</p>
+<pre><code class='language-json' lang='json'>wallet1 = $300 wallet2 = $350
+Using references to swap contents:
+wallet1 = $350 wallet2 = $300
+Using pointers to swap contents again:
+wallet1 = $300 wallet2 = $350
+Trying to use passing by value:
+wallet1 = $300 wallet2= $350
+</code></pre>
+<p>原始<code>wallet1</code>和<code>wallet2</code>经过引用参数传递和指针参数传递，均可成功达到交换的目的，但是仅通过简单的按值传递却没有达到效果。这里不在讨论指针参数传递与值传递的关系，可参考<em>参数传递（一）</em>。</p>
+<p>在引用参数传递中，声明<code>void swapr(int &amp; a,int &amp; b)</code>，调用形式参数<code>a</code>和<code>b</code>分别初始化为<code>wallet1</code>和<code>wallet2</code>，即在<code>swapr</code>中<code>a</code>和<code>b</code>为<code>wallet1</code>和<code>wallet2</code>的别名。</p>
+</blockquote>
+<h4 id='3引用参数与const'>3.引用参数与const：</h4>
+<blockquote><p>这里将对引用参数传递与值传递中的一些特殊情况作一些说明。</p>
+<p>借用如下代码：</p>
+<pre><code class='language-c++' lang='c++'>#include &lt;iostream&gt; 
+double cube(double a); 
+double refcube(const double &amp;ra);
+int main ()
+{
+ using namespace std;
+	double x = 3.0;
+	int y = 10; 
+	cout &lt;&lt; &quot;case double x:&quot; &lt;&lt;endl;
+ cout &lt;&lt; &quot;x = &quot; &lt;&lt; x &lt;&lt; &quot;, cube(x) = &quot; &lt;&lt; cube(x);
+	cout &lt;&lt; &quot;, refcube(x) = &quot; &lt;&lt; refcube(x)  &lt;&lt; endl;
+
+	cout &lt;&lt; &quot;case x + 3.0:&quot; &lt;&lt;endl;
+	cout &lt;&lt; &quot;x + 3.0 = &quot; &lt;&lt; x + 3.0 &lt;&lt; &quot;, cube(x + 3.0) = &quot; &lt;&lt; cube(x + 3.0);
+	cout &lt;&lt; &quot;, refcube(x + 3.0) = &quot; &lt;&lt; refcube(x + 3.0)  &lt;&lt; endl;
+
+	cout &lt;&lt; &quot;case int y:&quot; &lt;&lt;endl;
+	cout &lt;&lt; &quot;y = &quot; &lt;&lt; y &lt;&lt; &quot;, cube(y) = &quot; &lt;&lt; cube(y);
+	cout &lt;&lt; &quot;, refcube(y) = &quot; &lt;&lt; refcube(y)  &lt;&lt; endl;
+
+}
+
+double cube(double a)
+{
+ return a * a * a;
+}
+
+double refcube(const double &amp;ra)
+{
+ return ra * ra * ra;
+}
+
+</code></pre>
+<p>输出结果：</p>
+<pre><code class='language-json' lang='json'>case double x:
+x = 3, cube(x) = 27, refcube(x) = 27
+case x + 3.0:
+x + 3.0 = 6, cube(x + 3.0) = 216, refcube(x + 3.0) = 216
+case int y:
+y = 10, cube(y) = 1000, refcube(y) = 1000
+</code></pre>
+<p>这里有三种情况，第一种为正常情况，传入<code>double x</code>，<code>cube</code>和<code>refcube</code>均能接受，但是对于后面两种情况，虽然均输出正确，但是这里确实多了一些东西<code>double refcube(</code><strong><code>const</code></strong><code>double &amp;ra)</code>。</p>
+<ol start='' >
+<li>对于<code>x + 3.0</code>来说，它实际上是一个<strong>右值</strong>（一个标识<strong>临时性对象的表达式</strong>，或者是一个不与任何对象相联系的<strong>值</strong>———参考 <em>数据结构与算法分析.C++语言描述 第四版</em> ），若使用<code>double refcube(double &amp;ra)</code>，编译器会报错<code>candidate function not viable: expects an l-value for 1st argument</code>，即传递参数应为<strong>左值</strong>（可被引用的数据对象，例如<strong>变量</strong>、数组元素、结构成员、引用和解除引用的指针———参考 <em>C++ Primer Plus 第6版</em> ），由于这里传入参数与左值不匹配，那么加入<code>const</code>后会发生什么，它促使会生成一个<strong>临时变量</strong>，用来储存传入的右值<code>x + 3.0</code>，并参与计算。</li>
+<li>对于<code>int y</code>来说，若使用<code>double refcube(double &amp;ra)</code>，编译器会报错<code>candidate function not viable: no known conversion from &#39;int&#39; to &#39;double &amp;&#39; for 1st argument</code>，即传入的参数类型不正确，此时加入<code>const</code>，这时也会生成<strong>临时变量</strong>，<strong>转换为正确的类型</strong>后进行计算。</li>
+
+</ol>
+<p><img src="./参数传递二图/参数传递1.jpg" referrerpolicy="no-referrer" alt="参数传递1"></p>
+<p>总结上述两点，使用引用传递在加入<code>const</code>后会在如下两种情况下，创建临时变量协助特殊情况下的参数传递：</p>
+<blockquote><ol start='' >
+<li>实参的类型正确，但不是左值。</li>
+<li>实参的类型不正确，但可以转换为正确的类型。</li>
+
+</ol>
+</blockquote>
+<p>这里还有几点注意事项：</p>
+<blockquote><ol start='' >
+<li>在上述两种情况下，编译器都会生成一个临时匿名变量，将传入的<strong>参数的值传给该临时匿名变量（值传递）</strong>，并让引用（如上述<code>ra</code>）指向它，这些临时变量<strong>只在函数调用期存在</strong>，此后编译器便可以随意将其删除。</li>
+<li>在一些<strong>早期要求较为宽松的C++编译器</strong>中，对于第二种情况，当发生类型错误后，即使<strong>不使用<code>const</code></strong>，也会将错误类型的值传给创建的临时匿名变量，以实现类型转换，那么当涉及到<strong>传入参数的改变时</strong>就会出现问题，如，定义<code>long a = 3, b = 5;</code>和<code>void swapr(int &amp; a, const int &amp; b)</code>，在<code>swap(a, b)</code>后，便会发现结果<strong>并未有变化</strong>，那么这时就体现出了<strong>使用<code>const</code>的好处</strong>，因为如果加入<code>const</code>，在引用指向临时匿名变量时，就将引用声明为<strong>不可变类型</strong>，从而直接阻止了<strong>传入参数的改变</strong>，也就避免了这一错误的发生。</li>
+<li>而<strong>较新版本的C++编译器</strong>为了避免上述情况，便规定<strong>在不使用<code>const</code>的情况下，就不会创建临时匿名变量</strong>。</li>
+
+</ol>
+</blockquote>
+<p>&nbsp;</p>
+</blockquote>
+</blockquote>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+</body>
+</html>
