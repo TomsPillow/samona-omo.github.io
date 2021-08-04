@@ -1,1 +1,1 @@
-# samoan.github.io
+# samoan-omo.github.io
