@@ -3,4 +3,4 @@
 
 [C C++ Advanced](./C_C++_Advanced)
 
-[Mit6.830](./MIT6.830)
+[Mit6.830](./Mit6.830)
