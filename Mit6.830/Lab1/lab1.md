@@ -1259,7 +1259,7 @@ Total time: 1 second
 
 这里由`BufferPool`规定内存中的一个`Page`的大小为`BufferPool.getPageSize()*8`,单位为比特,由于`BufferPool`中的每个`Page`都由若干的`Tuple`占据着各自的`Slot`,然而每个`Slot`也有着1比特的`Header位`,所以每个`Page`中的`Slot`数量计算方式为:
 
-> numSlots = floor((BufferPool.getPageSize()*8) / (tuple size * 8 + 1))
+> __numSlots = floor((BufferPool.getPageSize()*8) / (tuple size * 8 + 1))__
 
 然后就是判断当前`Slot`是否有效的问题了,这里的`byte[] Header`数组是以byte为单位存在的,对于一个`Tuple`我们仅需要1bit作为判断位即可,那么这里的一个`Header`就对应8个`Slot`了,这里我们就使用位操作来判断`int headerIndex = i / 8;`来求出这个`Tuple`所属的`Header`序号,再使用`int offset = i % 8;`求出在这一字节`Header`中的偏移量,最后相与`&`即可得出结果.
 
