@@ -487,13 +487,13 @@ public class Tuple implements Serializable {
 
 ```
 
-``ant runtest -Dtest=TupleTest`
+`ant runtest -Dtest=TupleTest`
 
 这里的`TestCase:  modifyRecordId`报错是正常的.
 
 > 原文: At this point, your code should pass the unit tests TupleTest and TupleDescTest. At this point, modifyRecordId() should fail because you havn't implemented it yet.
 
-````shell
+```shell
 runtest:
     [junit] Running simpledb.TupleTest
     [junit] Testsuite: simpledb.TupleTest
@@ -510,7 +510,7 @@ runtest:
     [junit] 
  
 BUILD FAILED
-````
+```
 
 
 
