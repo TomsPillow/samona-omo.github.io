@@ -776,7 +776,7 @@ Total time: 1 second
 
 ***
 
-``src/java/simpledb/storage/BufferPool.java`
+`src/java/simpledb/storage/BufferPool.java`
 
 __注意__:
 
