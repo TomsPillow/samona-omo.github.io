@@ -8,4 +8,4 @@
 
 [C C++ Advanced](./C_C++_Advanced)
 
-[OS Notes](https://github.com/samona-omo/samona-omo.github.io/edit/main/OS\20Notes)
+[OS Notes](https://github.com/samona-omo/samona-omo.github.io/edit/main/OS%20Notes)
