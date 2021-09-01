@@ -7,3 +7,4 @@
   * [Lab1](https://samona-omo.github.io/Mit6.830/Lab1/lab1.html)
 
 [C C++ Advanced](./C_C++_Advanced)
+[OS Notes](./OS Notes)
