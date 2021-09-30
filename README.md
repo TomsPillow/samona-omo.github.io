@@ -14,3 +14,4 @@
 [Algorithm](./Algorithm)
   * [结合二叉树的快速排序算法分析](https://samona-omo.github.io/Algorithm/Quicksort&BTree.html)
   * [最长公共子序列](https://samona-omo.github.io/Algorithm/最长公共子序列.html)
+  * [堆的建立和堆排序](https://samona-omo.github.io/Algorithm/Heap.html)
