@@ -19,3 +19,4 @@
 
 * [Compiler](./compiler)
     * [词法分析](https://samona-omo.github.io/compiler/词法分析.html)
+    * [词法分析程序设计报告](https://samona-omo.github.io/compiler/词法分析程序设计报告.html)
