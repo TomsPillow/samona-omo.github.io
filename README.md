@@ -1,4 +1,4 @@
-# This is samoan-omo.github.io
+# [This is samoan-omo.github.io](https://samona-omo.github.io/index.html)
 
 * [Mit6.081](./MIT6.081)
     * [实验环境配置](https://samona-omo.github.io/MIT6.081/Configuration/config.html)
